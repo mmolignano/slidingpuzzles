@@ -10,7 +10,7 @@ public class RawDistance implements Heuristic{
 				int row = (curr - 1) / b.getSize();
 				int col = (curr - 1) % b.getSize();
 				row = Math.abs(row-i);
-				col = Math.abs(col-i);
+				col = Math.abs(col-j);
 				value += (row > col) ? row : col;
 			}
 		}
