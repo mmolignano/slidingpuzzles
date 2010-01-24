@@ -26,9 +26,9 @@ public class AStar {
 		int [] empty = new int [0];
 		Node root = new Node(b, 0, empty, row, col);
 		nodes.add(root);
-		int depthCheck = 0;
 		Node leastCostNode = root;
-		while(leastCostNode.getDepth() < 200) {
+		long before = System.currentTimeMillis();
+		while(true) {
 			leastCostNode = null;
 			int leastCost = -1;
 			
@@ -39,7 +39,13 @@ public class AStar {
 						System.out.println("Depth: " + n.getDepth());
 						double total = 0;
 						total = (double)children / (double)expanded;
-						System.out.println(total);
+						System.out.println("Average branching factor: " + total);
+						long after = System.currentTimeMillis();
+						double time = after-before;
+						time = (double)time / 1000.0;
+						System.out.println("Expanded " + expanded + 
+										   " nodes in " + time + 
+										   " seconds (" + ((double)expanded / time) + " nodes per second)");
 						return n.priorMoves;
 					} else {
 						n.cost = n.depth + 3*heuristicValue;
@@ -58,17 +64,15 @@ public class AStar {
 			
 			nodes.remove(leastCostNode);
 			leastCostNode.expand();
-			depthCheck ++;
 			expanded++;
 			nodes.addAll(leastCostNode.getChildren());
-			if (depthCheck % 5000 == 0) {
-				System.out.println("Expansions: " + depthCheck);
-				System.out.println("Depth: " + leastCostNode.getDepth());
+			if (expanded % 5000 == 0) {
+				System.out.println("Expansions: " + expanded);
+				System.out.println("Board: \n" + leastCostNode); 
 			} 
 			if(!leastCostNode.children.isEmpty()){
 				children += leastCostNode.children.size();
 			}
 		}
-		return null;
 	}
 }
