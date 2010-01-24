@@ -19,7 +19,7 @@ public class Board {
 	}
 
 	public Board(int size) {
-		size = size;
+		this.size = size;
 		board = new int[size][size];
 	}
 	

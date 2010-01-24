@@ -6,7 +6,7 @@ public class MisplacedHeuristic implements Heuristic {
 		int counter = 0;
 		for(int i=0; i<b.getSize(); i++) {
 			for (int j=0; j<b.getSize(); j++) {
-				if (b.getBoard()[i][j] == (b.getSize()*i) + j) {
+				if (b.getBoard()[i][j] != ((b.getSize()*i) + 1) + j && b.getBoard()[i][j] != 0) {
 					counter++;
 				}
 			}
