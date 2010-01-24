@@ -14,6 +14,15 @@ public class Test {
 //		board[2][2] = 1;
 //		b.setBoard(board);
 		b.parseFile("/tmp/puzzle");
+		
+		Node n = new Node(b, 0);
+		System.out.println(n);
+		
+		n.expand();
+		for(Node node:n.children) {
+			System.out.println(node);
+		}
+		
 		MisplacedHeuristic h = new MisplacedHeuristic();
 		RawDistance h2 = new RawDistance();
 		System.out.println(h2.evaluate(b));

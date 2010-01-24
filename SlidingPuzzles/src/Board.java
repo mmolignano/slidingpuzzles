@@ -22,10 +22,58 @@ public class Board {
 	public void setBoard(int[][] board) {
 		this.board = board;
 	}
+	public String toString() {
+		String s = "";
+		for(int i=0; i<board.length; i++) {
+			for(int j=0; j<board.length; j++) {
+				if (j==board.length-1) {
+					s += board[i][j];
+				} else {
+					s += board[i][j] + ",";
+				}
+			}
+			s += "\n";
+		}
+		return s;
+	}
+	/**
+	 * Moves the blank in direction d
+	 * @param row
+	 * @param col
+	 * @param d
+	 * @return
+	 */
+	public boolean moveSpace(int row, int col, Direction d) {
+		if (this.board[row][col] != 0)
+			return false;
+		if (d == Direction.UP) {
+			this.board[row][col] = this.board[row-1][col];
+			this.board[row-1][col] = 0;
+		} else if (d == Direction.DOWN) {
+			this.board[row][col] = this.board[row+1][col];
+			this.board[row+1][col] = 0;
+		} else if (d == Direction.RIGHT) {
+			this.board[row][col] = this.board[row][col+1];
+			this.board[row][col+1] = 0;
+		} else {
+			this.board[row][col] = this.board[row][col-1];
+			this.board[row][col-1] = 0;
+		}
+		return true;
+	}
 
 	public Board(int size) {
 		this.size = size;
 		board = new int[size][size];
+	}
+	public Board(Board b) {
+		this.size = b.size;
+		this.board = new int[b.size][b.size];
+		for (int i=0; i<b.size; i++) {
+			for (int j=0; j<b.size; j++) {
+				this.board[i][j] = b.getBoard()[i][j];
+			}
+		}
 	}
 	
 	public void parseFile(String filename) {
