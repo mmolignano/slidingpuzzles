@@ -1,4 +1,4 @@
-public class RawDistance {
+public class RawDistance implements Heuristic{
 
 	public int evaluate(Board b) {
 		int value = 0;
