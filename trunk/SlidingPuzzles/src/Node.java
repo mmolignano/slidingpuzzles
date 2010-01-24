@@ -6,8 +6,9 @@ public class Node {
 	int cost;
 	ArrayList<Node> children;
 	int [] priorMoves;
+	Direction dir;
 
-	public Node(Board b, int depth, int [] priorMoves, int row, int col) {
+	public Node(Board b, int depth, int [] priorMoves, int row, int col, Direction dir) {
 		board = b;
 		this.depth = depth;
 		this.cost = -1;
@@ -16,6 +17,7 @@ public class Node {
 		for (int i=0; i<priorMoves.length; i++) {
 			this.priorMoves[i] = priorMoves[i];
 		}
+		this.dir = dir;
 		// The board has already changed by now!
 		if(depth !=0)
 			this.priorMoves[depth-1] = (this.board.getSize()*row) + col + 1;
@@ -47,25 +49,25 @@ public class Node {
 					}
 				}
 			}
-			if (row != 0) {
+			if (row != 0 && (this.dir == null || this.dir != Direction.DOWN)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.UP);
-				children.add(new Node(newBoard, depth+1, this.priorMoves, row-1, col));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row-1, col, Direction.UP));
 			}
-			if (col != 0) {
+			if (col != 0 && (this.dir == null || this.dir != Direction.RIGHT)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.LEFT);
-				children.add(new Node(newBoard, depth+1, this.priorMoves, row, col-1));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row, col-1, Direction.LEFT));
 			}
-			if (row != board.getSize()-1) {
+			if (row != board.getSize()-1 && (this.dir == null || this.dir != Direction.UP)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.DOWN);
-				children.add(new Node(newBoard, depth+1, this.priorMoves, row+1, col));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row+1, col, Direction.DOWN));
 			}
-			if (col != board.getSize()-1) {
+			if (col != board.getSize()-1 && (this.dir == null || this.dir != Direction.LEFT)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.RIGHT);
-				children.add(new Node(newBoard, depth+1, this.priorMoves, row, col+1));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row, col+1, Direction.RIGHT));
 			}
 		}
 	}
