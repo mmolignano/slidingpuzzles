@@ -121,7 +121,7 @@ public class Board {
 			String line;
 			int lines = 0;
 			try {
-				while((line = br.readLine()) != null) {
+				while((line = br.readLine()) != null && lines < this.board.length) {
 					String[] vals = line.split(",");
 					for(int i=0; i<vals.length; i++) {
 						if (vals[i].equals(" "))
