@@ -12,7 +12,11 @@ public class AStar {
 		this.nodes = new ArrayList<Node>();
 	}
 	
-	public int[] run(Board b) {
+	public int[] run(Board b, int scale) {
+		if (!b.isSolvable()) {
+			System.out.println("Sorry, it looks like this puzzle is IMPOSSIBLE to solve.");
+			return null;
+		}
 		int row = 0;
 		int col = 0;
 		for (int i=0; i<b.getBoard().length; i++) {
@@ -48,7 +52,7 @@ public class AStar {
 										   " seconds (" + ((double)expanded / time) + " nodes per second)");
 						return n.priorMoves;
 					} else {
-						n.cost = n.depth + heuristicValue;
+						n.cost = n.depth + scale*heuristicValue;
 					}
 				}
 				if (leastCostNode == null) {
