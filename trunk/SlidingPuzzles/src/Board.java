@@ -39,41 +39,42 @@ public class Board {
 	
 	
 	public boolean isSolvable() {
-		int[] arr=new int[size*size];
-		int inversions=0;
-		int pos=0;
-		
-		
-//		int row=0;//store the position for blank
+		int[] arr = new int[size * size];
+		int inversions = 0;
+		int pos = 0;
 
-		for (int i=0; i<size; i++) {
-			for (int j=0; j<size; j++) {
-				
-				arr[pos]=board[i][j];
+		// int row=0;//store the position for blank
+
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+
+				arr[pos] = board[i][j];
 				pos++;
-//				
-//				if (board[i][j]==0) {
-//					row=i+1;
-//				}
+				//				
+				// if (board[i][j]==0) {
+				// row=i+1;
+				// }
 			}
 		}
 
-		//count inversions
-		for (int i=0; i<arr.length; i++) {
-			for (int j=i+1; j<arr.length; j++) {
-				if ((arr[i]> arr[j]) && arr[i]*arr[j]!=0) {
-					//System.out.println("i: "+arr[i]+"> j: "+arr[j]); //print out inversions
+		// count inversions
+		for (int i = 0; i < arr.length; i++) {
+			for (int j = i + 1; j < arr.length; j++) {
+				if ((arr[i] > arr[j]) && arr[i] * arr[j] != 0) {
+					// System.out.println("i: "+arr[i]+"> j: "+arr[j]); //print
+					// out inversions
 					inversions++;
-					
+
 				}
 			}
 		}
-		System.out.println("inversions:"+inversions);
-		if ((inversions)% 2 ==0) return true;
-		
+		System.out.println("inversions:" + inversions);
+		if ((inversions) % 2 == 0)
+			return true;
+
 		return false;
 	}
-	
+
 	/**
 	 * Moves the blank in direction d
 	 * @param row
