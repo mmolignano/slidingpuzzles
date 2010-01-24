@@ -48,7 +48,7 @@ public class AStar {
 										   " seconds (" + ((double)expanded / time) + " nodes per second)");
 						return n.priorMoves;
 					} else {
-						n.cost = n.depth + 3*heuristicValue;
+						n.cost = n.depth + heuristicValue;
 					}
 				}
 				if (leastCostNode == null) {

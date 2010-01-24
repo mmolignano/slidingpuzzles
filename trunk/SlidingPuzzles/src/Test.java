@@ -2,10 +2,10 @@
 public class Test {
 	public static void main(String []args) {
 		Board b = new Board(3);
-		b.parseFile("C:\\Users\\kangchao\\Desktop\\15.txt");
+		b.parseFile("R:\\workspace\\Coolthings\\src\\puzzles\\8-1");
 		
 		
-		ManhattanDistance h = new ManhattanDistance();
+		Heuristic h = new RawDistance();
 		
 		AStar alg = new AStar(h);
 		int [] answer = alg.run(b);
