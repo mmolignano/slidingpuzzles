@@ -23,7 +23,7 @@ public class AStar {
 		int [] empty = new int [0];
 		Node root = new Node(b, 0, empty, row, col);
 		nodes.add(root);
-		
+		int depthCheck = 0;
 		Node leastCostNode = root;
 		while(leastCostNode.getDepth() < 40) {
 			leastCostNode = null;
@@ -33,6 +33,7 @@ public class AStar {
 				if (n.getCost() < 0) {
 					int heuristicValue = heuristic.evaluate(n.getBoard());
 					if (heuristicValue == 0) {
+						System.out.println("Depth: " + n.getDepth());
 						return n.priorMoves;
 					} else {
 						n.cost = n.depth + heuristicValue;
@@ -51,8 +52,11 @@ public class AStar {
 			
 			nodes.remove(leastCostNode);
 			leastCostNode.expand();
+			depthCheck ++;
 			nodes.addAll(leastCostNode.getChildren());
-			
+			if (depthCheck % 5000 == 0) {
+				System.out.println("Expansions: " + depthCheck);
+			} 
 		}
 		return null;
 	}

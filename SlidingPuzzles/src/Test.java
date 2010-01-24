@@ -1,7 +1,7 @@
 
 public class Test {
 	public static void main(String []args) {
-		Board b = new Board(3);
+		Board b = new Board(4);
 //		int [][] board = new int[3][3];
 //		board[0][0] = 7;
 //		board[0][1] = 2;
