@@ -25,7 +25,7 @@ public class AStar {
 		nodes.add(root);
 		int depthCheck = 0;
 		Node leastCostNode = root;
-		while(leastCostNode.getDepth() < 40) {
+		while(leastCostNode.getDepth() < 200) {
 			leastCostNode = null;
 			int leastCost = -1;
 			
@@ -36,7 +36,7 @@ public class AStar {
 						System.out.println("Depth: " + n.getDepth());
 						return n.priorMoves;
 					} else {
-						n.cost = n.depth + heuristicValue;
+						n.cost = n.depth + 3*heuristicValue;
 					}
 				}
 				if (leastCostNode == null) {
@@ -56,6 +56,7 @@ public class AStar {
 			nodes.addAll(leastCostNode.getChildren());
 			if (depthCheck % 5000 == 0) {
 				System.out.println("Expansions: " + depthCheck);
+				System.out.println("Depth: " + leastCostNode.getDepth());
 			} 
 		}
 		return null;

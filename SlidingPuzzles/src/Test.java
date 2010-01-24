@@ -13,7 +13,7 @@ public class Test {
 //		board[2][1] = 3;
 //		board[2][2] = 1;
 //		b.setBoard(board);
-		b.parseFile("/tmp/puzzle");
+		b.parseFile("C:\\Users\\kangchao\\Desktop\\15.txt");
 		
 		
 		ManhattanDistance h = new ManhattanDistance();
