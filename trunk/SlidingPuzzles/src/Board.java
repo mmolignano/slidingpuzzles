@@ -61,7 +61,7 @@ public class Board {
 		}
 		return true;
 	}
-
+	
 	public Board(int size) {
 		this.size = size;
 		board = new int[size][size];
