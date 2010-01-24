@@ -4,6 +4,9 @@ import java.util.ArrayList;
 public class AStar {
 	Heuristic heuristic;
 	ArrayList<Node> nodes;
+	int expanded = 0;
+	int children = 0;
+	
 	public AStar(Heuristic h) {
 		this.heuristic = h;
 		this.nodes = new ArrayList<Node>();
@@ -34,6 +37,9 @@ public class AStar {
 					int heuristicValue = heuristic.evaluate(n.getBoard());
 					if (heuristicValue == 0) {
 						System.out.println("Depth: " + n.getDepth());
+						double total = 0;
+						total = (double)children / (double)expanded;
+						System.out.println(total);
 						return n.priorMoves;
 					} else {
 						n.cost = n.depth + 3*heuristicValue;
@@ -53,11 +59,15 @@ public class AStar {
 			nodes.remove(leastCostNode);
 			leastCostNode.expand();
 			depthCheck ++;
+			expanded++;
 			nodes.addAll(leastCostNode.getChildren());
 			if (depthCheck % 5000 == 0) {
 				System.out.println("Expansions: " + depthCheck);
 				System.out.println("Depth: " + leastCostNode.getDepth());
 			} 
+			if(!leastCostNode.children.isEmpty()){
+				children += leastCostNode.children.size();
+			}
 		}
 		return null;
 	}
