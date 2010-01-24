@@ -3,13 +3,37 @@ import java.util.ArrayList;
 public class Node {
 	Board board;
 	int depth;
+	int cost;
 	ArrayList<Node> children;
+	int [] priorMoves;
 
-	public Node(Board b, int depth) {
+	public Node(Board b, int depth, int [] priorMoves, int row, int col) {
 		board = b;
 		this.depth = depth;
+		this.cost = -1;
 		children = new ArrayList<Node>();
+		this.priorMoves = new int[depth];
+		for (int i=0; i<priorMoves.length; i++) {
+			this.priorMoves[i] = priorMoves[i];
+		}
+		// The board has already changed by now!
+		if(depth !=0)
+			this.priorMoves[depth-1] = (3*row) + col + 1;
 	}
+
+	
+	
+	public int getCost() {
+		return cost;
+	}
+
+
+
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+
+
 
 	public void expand() {
 		int row = 0;
@@ -26,22 +50,22 @@ public class Node {
 			if (row != 0) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.UP);
-				children.add(new Node(newBoard, depth+1));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row-1, col));
 			}
 			if (col != 0) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.LEFT);
-				children.add(new Node(newBoard, depth+1));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row, col-1));
 			}
 			if (row != board.getSize()-1) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.DOWN);
-				children.add(new Node(newBoard, depth+1));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row+1, col));
 			}
 			if (col != board.getSize()-1) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.RIGHT);
-				children.add(new Node(newBoard, depth+1));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row, col+1));
 			}
 		}
 	}

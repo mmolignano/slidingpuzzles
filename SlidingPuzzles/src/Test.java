@@ -15,18 +15,14 @@ public class Test {
 //		b.setBoard(board);
 		b.parseFile("/tmp/puzzle");
 		
-		Node n = new Node(b, 0);
-		System.out.println(n);
 		
-		n.expand();
-		for(Node node:n.children) {
-			System.out.println(node);
+		ManhattanDistance h = new ManhattanDistance();
+		
+		AStar alg = new AStar(h);
+		int [] answer = alg.run(b);
+		for(int i=0;i<answer.length; i++){
+			System.out.print(answer[i] + ", ");
 		}
-		
-		MisplacedHeuristic h = new MisplacedHeuristic();
-		RawDistance h2 = new RawDistance();
-		System.out.println(h2.evaluate(b));
-		
 		
 	}
 }
