@@ -14,7 +14,7 @@ public class Test {
 		board[2][2] = 1;
 		b.setBoard(board);
 		MisplacedHeuristic h = new MisplacedHeuristic();
-		ManhattanDistance h2 = new ManhattanDistance();
+		RawDistance h2 = new RawDistance();
 		System.out.println(h2.evaluate(b));
 		
 		
