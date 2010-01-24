@@ -18,7 +18,7 @@ public class Node {
 		}
 		// The board has already changed by now!
 		if(depth !=0)
-			this.priorMoves[depth-1] = (3*row) + col + 1;
+			this.priorMoves[depth-1] = (this.board.getSize()*row) + col + 1;
 	}
 
 	
