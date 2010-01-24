@@ -24,7 +24,7 @@ public class AStar {
 			}
 		}
 		int [] empty = new int [0];
-		Node root = new Node(b, 0, empty, row, col);
+		Node root = new Node(b, 0, empty, row, col, null);
 		nodes.add(root);
 		Node leastCostNode = root;
 		long before = System.currentTimeMillis();
@@ -61,11 +61,10 @@ public class AStar {
 					leastCost = n.getCost();
 				}
 			}
-			
-			nodes.remove(leastCostNode);
 			leastCostNode.expand();
 			expanded++;
 			nodes.addAll(leastCostNode.getChildren());
+			nodes.remove(leastCostNode);
 			if (expanded % 5000 == 0) {
 				System.out.println("Expansions: " + expanded);
 				System.out.println("Board: \n" + leastCostNode); 
