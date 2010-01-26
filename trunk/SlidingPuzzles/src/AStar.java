@@ -17,18 +17,18 @@ public class AStar {
 			System.out.println("Sorry, it looks like this puzzle is IMPOSSIBLE to solve.");
 			return null;
 		}
-		int row = 0;
-		int col = 0;
-		for (int i=0; i<b.getBoard().length; i++) {
-			for (int j=0; j<b.getBoard().length; j++) {
+		byte row = 0;
+		byte col = 0;
+		for (byte i=0; i<b.getBoard().length; i++) {
+			for (byte j=0; j<b.getBoard().length; j++) {
 				if (b.getBoard()[i][j] == 0) {
 					row = i;
 					col = j;
 				}
 			}
 		}
-		int [] empty = new int [0];
-		Node root = new Node(b, 0, empty, row, col, null);
+		byte [] empty = new byte [0];
+		Node root = new Node(b, (short)0, empty, row, col, null);
 		nodes.add(root);
 		Node leastCostNode = root;
 		long before = System.currentTimeMillis();
