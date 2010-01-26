@@ -7,13 +7,15 @@ public class Node implements Comparable<Node>{
 	short cost;
 	byte [] priorMoves;
 	Direction dir;
+	Node parent;
 
 
-	public Node(Board b, short depth, byte [] priorMoves, byte row, byte col, Direction dir) {
+	public Node(Board b, short depth, byte [] priorMoves, byte row, byte col, Direction dir, Node parent) {
 		board = b;
 		this.depth = depth;
 		this.cost = -1;
 		this.priorMoves = new byte[depth];
+		this.parent = parent;
 		for (int i=0; i<priorMoves.length; i++) {
 			this.priorMoves[i] = priorMoves[i];
 		}
@@ -31,7 +33,7 @@ public class Node implements Comparable<Node>{
 
 
 
-	public void setCost(byte cost) {
+	public void setCost(short cost) {
 		this.cost = cost;
 	}
 
@@ -52,22 +54,22 @@ public class Node implements Comparable<Node>{
 			if (row != 0 && (this.dir == null || this.dir != Direction.DOWN)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.UP);
-				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, (byte)(row-1), col, Direction.UP));
+				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, (byte)(row-1), col, Direction.UP, this));
 			}
 			if (col != 0 && (this.dir == null || this.dir != Direction.RIGHT)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.LEFT);
-				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, row, (byte)(col-1), Direction.LEFT));
+				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, row, (byte)(col-1), Direction.LEFT, this));
 			}
 			if (row != board.getSize()-1 && (this.dir == null || this.dir != Direction.UP)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.DOWN);
-				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, (byte)(row+1), col, Direction.DOWN));
+				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, (byte)(row+1), col, Direction.DOWN, this));
 			}
 			if (col != board.getSize()-1 && (this.dir == null || this.dir != Direction.LEFT)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.RIGHT);
-				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, row, (byte)(col+1), Direction.RIGHT));
+				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, row, (byte)(col+1), Direction.RIGHT, this));
 			}
 		}
 		return children;
@@ -93,7 +95,14 @@ public class Node implements Comparable<Node>{
 		this.depth = depth;
 	}
 
-
+	public void backUpToParent() {
+		if (this.parent == null) {
+			return;
+		}
+		if (this.parent.getCost() > this.cost) {
+			this.parent.setCost(this.cost);
+		}
+	}
 
 	@Override
 	public int compareTo(Node other) {
