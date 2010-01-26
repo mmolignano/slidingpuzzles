@@ -14,7 +14,7 @@ public class AStarPriority {
 	}
 	
 	public byte[] run(Board b, int scale) {
-		System.out.println(b);
+		Runtime runtime = Runtime.getRuntime();
 		if (!b.isSolvable()) {
 			System.out.println("Sorry, it looks like this puzzle is IMPOSSIBLE to solve.");
 			return null;
@@ -57,7 +57,19 @@ public class AStarPriority {
 				if (expanded % 5000 == 0) {
 					System.out.println("Expansions: " + expanded);
 					System.out.println("Nodes: " + nodes.size());
-					System.out.println("Board: \n" + leastCostNode); 
+					System.out.println("Board: \n" + leastCostNode);
+					System.out.println("Currently using:  " + ((runtime.totalMemory()-runtime.freeMemory()) / 1000000.0) + "MB");
+					if (runtime.freeMemory() < 100000000) {
+						System.out.println("Killing half of the " + nodes.size() + " nodes.");
+						PriorityQueue<Node> newNodes = new PriorityQueue<Node>();
+						int numToRemove = nodes.size() / 2;
+						while (numToRemove > 0) {
+							newNodes.add(nodes.remove());
+							numToRemove--;
+						}
+						nodes = newNodes;
+						System.out.println(nodes.size() + " nodes remain.");
+					}
 				} 
 				children += subNodes.size();
 				
