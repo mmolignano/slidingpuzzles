@@ -5,15 +5,15 @@ public class Test {
 	public static void main(String []args) {
 		try {
 			ArrayList<Integer> arr = new ArrayList<Integer>();
-			System.out.println("Increasing heap size by filling it with trash.");
+			System.out.println("Claiming heap space by filling it with trash.");
 			while(true) {
 				arr.add(new Integer(Integer.MAX_VALUE));
 			}
 		} catch (OutOfMemoryError err) {
 			System.out.println("Ok, let's go.");
 		}
-		Board b = new Board((byte)5);
-		b.parseFile("/home/tliu/devel/eclipse/SlidingPuzzles/src/puzzles/24-2");
+		Board b = new Board((byte)3);
+		b.parseFile("C:\\Users\\thomas\\workspace\\Coolthings\\src\\puzzles\\8-1");
 		Runtime r = Runtime.getRuntime();
 		System.out.println("Max memory allotted: " + (r.totalMemory() / 1000000.0) + "MB");
 		

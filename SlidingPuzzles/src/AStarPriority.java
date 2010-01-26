@@ -59,7 +59,7 @@ public class AStarPriority {
 					System.out.println("Nodes: " + nodes.size());
 					System.out.println("Board: \n" + leastCostNode);
 					System.out.println("Currently using:  " + ((runtime.totalMemory()-runtime.freeMemory()) / 1000000.0) + "MB");
-					if (runtime.freeMemory() < 200000000) {
+					if (runtime.freeMemory() < runtime.maxMemory()/4) {
 						System.out.println("Killing half of the " + nodes.size() + " nodes.");
 						PriorityQueue<Node> newNodes = new PriorityQueue<Node>();
 						int numToRemove = nodes.size() / 2;
@@ -68,7 +68,7 @@ public class AStarPriority {
 							numToRemove--;
 						}
 						nodes = newNodes;
-						//runtime.gc();
+						runtime.gc();
 						System.out.println(nodes.size() + " nodes remain.");
 					}
 				} 
@@ -76,7 +76,7 @@ public class AStarPriority {
 				
 				
 			} catch (OutOfMemoryError err) {
-				System.out.println("Out of memory.");
+				System.err.println("Out of memory.");
 				return null;
 			}
 			
