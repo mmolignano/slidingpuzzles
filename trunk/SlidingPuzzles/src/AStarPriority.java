@@ -30,7 +30,7 @@ public class AStarPriority {
 			}
 		}
 		byte [] empty = new byte [0];
-		Node root = new Node(b, (short) 0, empty, row, col, null);
+		Node root = new Node(b, (short) 0, empty, row, col, null, null);
 		setCost(root, scale);
 		nodes.add(root);
 		Node leastCostNode = root;
@@ -66,6 +66,9 @@ public class AStarPriority {
 						while (numToRemove > 0) {
 							newNodes.add(nodes.remove());
 							numToRemove--;
+						}
+						for (Node n : nodes) {
+							n.backUpToParent();
 						}
 						nodes = newNodes;
 						runtime.gc();
