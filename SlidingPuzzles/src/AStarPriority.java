@@ -32,7 +32,7 @@ public class AStarPriority {
 			}
 		}
 		byte [] empty = new byte [0];
-		Node root = new Node(b, (short) 0, empty, row, col, null, null);
+		Node root = new Node(b, (short) 0, empty, row, col, null);
 		setCost(root, scale);
 		nodes.add(root);
 		Node leastCostNode = root;
@@ -65,19 +65,8 @@ public class AStarPriority {
 				
 				
 			} catch (OutOfMemoryError err) {
-				System.out.println("Not enough memory.  Stuff is going to be slow.");
-				Node n = nodes.peek();
-				Iterator<Node> iter = nodes.iterator();
-				while(iter.hasNext()) {
-					n = iter.next();
-				}
-				Node parent = n.getParent();
-				for (Node child : parent.getChildren()) {
-					nodes.remove(child);
-				}
-				parent.killChildren();
-				nodes.remove(parent);
-				nodes.add(parent);
+				System.out.println("Out of memory.");
+				return null;
 			}
 			
 		}
