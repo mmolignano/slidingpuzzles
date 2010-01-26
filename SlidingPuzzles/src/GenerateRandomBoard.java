@@ -37,7 +37,7 @@ public class GenerateRandomBoard {
 		return arr;
 	}
 	public static void main(String [] args){
-		System.out.println(generateBoard(4));
+		System.out.println(generateBoard(5));
 	}
 	
 }
