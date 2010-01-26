@@ -13,7 +13,7 @@ public class AStarPriority {
 		this.nodes = new PriorityQueue<Node>();
 	}
 	
-	public byte[] run(Board b, int scale) {
+	public String run(Board b, int scale, int maxDepth) {
 		Runtime runtime = Runtime.getRuntime();
 		if (!b.isSolvable()) {
 			System.out.println("Sorry, it looks like this puzzle is IMPOSSIBLE to solve.");
@@ -29,21 +29,23 @@ public class AStarPriority {
 				}
 			}
 		}
-		byte [] empty = new byte [0];
-		Node root = new Node(b, (short) 0, empty, row, col, null, null);
+		Node root = new Node(b, (short) 0, row, col, null, null);
 		setCost(root, scale);
 		nodes.add(root);
 		Node leastCostNode = root;
 		long before = System.currentTimeMillis();
 		
 		while(true) {
+			if (nodes.size() == 0) {
+				return null;
+			}
 			leastCostNode = nodes.remove();
 			if (isFinishState(leastCostNode)) {
 				return calculateStatistics(before, children, expanded, leastCostNode);
 			}
 					
 			try {
-				Collection <Node> subNodes = leastCostNode.expand();
+				Collection <Node> subNodes = leastCostNode.expand((short)maxDepth);
 				expanded++;
 				for (Node n : subNodes) {
 					setCost(n, scale);
@@ -59,16 +61,18 @@ public class AStarPriority {
 					System.out.println("Nodes: " + nodes.size());
 					System.out.println("Board: \n" + leastCostNode);
 					System.out.println("Currently using:  " + ((runtime.totalMemory()-runtime.freeMemory()) / 1000000.0) + "MB");
-					if (runtime.freeMemory() < runtime.maxMemory()/4) {
-						System.out.println("Killing half of the " + nodes.size() + " nodes.");
+					if (runtime.freeMemory() < runtime.totalMemory()/4) {
+						System.out.println("Backing up the last 50% of nodes.");
 						PriorityQueue<Node> newNodes = new PriorityQueue<Node>();
-						int numToRemove = nodes.size() / 2;
-						while (numToRemove > 0) {
+						double numToRemove = nodes.size() * 0.5 ;
+						while (numToRemove > 0) {							
 							newNodes.add(nodes.remove());
 							numToRemove--;
 						}
 						for (Node n : nodes) {
 							n.backUpToParent();
+							if (n.parent != null)
+								newNodes.add(n.parent);
 						}
 						nodes = newNodes;
 						runtime.gc();
@@ -86,7 +90,7 @@ public class AStarPriority {
 		}
 	}
 	
-	private byte[] calculateStatistics(long startTime, int children, int expanded, Node end) {
+	private String calculateStatistics(long startTime, int children, int expanded, Node end) {
 		System.out.println("Depth: " + end.getDepth());
 		double total = 0;
 		total = (double)children / (double)expanded;
@@ -97,7 +101,12 @@ public class AStarPriority {
 		System.out.println("Expanded " + expanded + 
 						   " nodes in " + time + 
 						   " seconds (" + ((double)expanded / time) + " nodes per second)");
-		return end.priorMoves;
+		String priorMoves = "";
+		while (end.parent != null) {
+			priorMoves = end.lastMove() + ", "  + priorMoves; 
+			end = end.parent;
+		}
+		return priorMoves;
 	}
 	
 	private boolean isFinishState(Node n) {
