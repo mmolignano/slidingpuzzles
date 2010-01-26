@@ -60,7 +60,7 @@ public class Board {
 		// count inversions
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = i + 1; j < arr.length; j++) {
-				if (arr[i] > arr[j]) {
+				if ((arr[i] > arr[j]) && arr[i] * arr[j] != 0) {
 					// System.out.println("i: "+arr[i]+"> j: "+arr[j]); //print
 					// out inversions
 					inversions++;
@@ -68,7 +68,7 @@ public class Board {
 				}
 			}
 		}
-		//System.out.println("Inversions: " + inversions);
+		System.out.println("Inversions: " + inversions);
 		if (size % 2 == 1) {
 			if ((inversions) % 2 == 0) {
 				return true;

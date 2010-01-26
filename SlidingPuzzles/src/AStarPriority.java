@@ -13,7 +13,8 @@ public class AStarPriority {
 		this.nodes = new PriorityQueue<Node>();
 	}
 	
-	public int[] run(Board b, int scale) {
+	public byte[] run(Board b, int scale) {
+		System.out.println(b);
 		if (!b.isSolvable()) {
 			System.out.println("Sorry, it looks like this puzzle is IMPOSSIBLE to solve.");
 			return null;
@@ -28,8 +29,8 @@ public class AStarPriority {
 				}
 			}
 		}
-		int [] empty = new int [0];
-		Node root = new Node(b, 0, empty, row, col, null);
+		byte [] empty = new byte [0];
+		Node root = new Node(b, (short) 0, empty, row, col, null);
 		setCost(root, scale);
 		nodes.add(root);
 		Node leastCostNode = root;
@@ -69,7 +70,7 @@ public class AStarPriority {
 		}
 	}
 	
-	private int[] calculateStatistics(long startTime, int children, int expanded, Node end) {
+	private byte[] calculateStatistics(long startTime, int children, int expanded, Node end) {
 		System.out.println("Depth: " + end.getDepth());
 		double total = 0;
 		total = (double)children / (double)expanded;
@@ -88,6 +89,6 @@ public class AStarPriority {
 	}
 	
 	public void setCost(Node n, int scale) {
-		n.setCost(n.getDepth() + scale*heuristic.evaluate(n.getBoard()));
+		n.setCost((byte) (n.getDepth() + scale*heuristic.evaluate(n.getBoard())));
 	}
 }
