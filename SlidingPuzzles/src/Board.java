@@ -5,21 +5,21 @@ import java.io.IOException;
 
 
 public class Board {
-	byte size;
-	byte [][] board;
-	public byte getSize() {
+	int size;
+	int [][] board;
+	public int getSize() {
 		return size;
 	}
 
-	public void setSize(byte size) {
+	public void setSize(int size) {
 		this.size = size;
 	}
 
-	public byte[][] getBoard() {
+	public int[][] getBoard() {
 		return board;
 	}
 
-	public void setBoard(byte[][] board) {
+	public void setBoard(int[][] board) {
 		this.board = board;
 	}
 	public String toString() {
@@ -43,24 +43,24 @@ public class Board {
 		int inversions = 0;
 		int pos = 0;
 
-		// int row=0;//store the position for blank
+		int row = 0;//store the position for blank
 
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 
 				arr[pos] = board[i][j];
 				pos++;
-				//				
-				// if (board[i][j]==0) {
-				// row=i+1;
-				// }
+								
+				if (board[i][j]==0) {
+					 row = size - i;
+				}
 			}
 		}
 
 		// count inversions
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = i + 1; j < arr.length; j++) {
-				if ((arr[i] > arr[j]) && arr[i] * arr[j] != 0) {
+				if (arr[i] > arr[j]) {
 					// System.out.println("i: "+arr[i]+"> j: "+arr[j]); //print
 					// out inversions
 					inversions++;
@@ -68,9 +68,23 @@ public class Board {
 				}
 			}
 		}
-		System.out.println("Inversions: " + inversions);
-		if ((inversions) % 2 == 0)
-			return true;
+		//System.out.println("Inversions: " + inversions);
+		if (size % 2 == 1) {
+			if ((inversions) % 2 == 0) {
+				return true;
+			}
+		} else {
+			if (row % 2 == 0) {
+				if (inversions % 2 == 1) {
+					return true;
+				}
+			}
+			else if (row % 2 == 1) {
+				if (inversions % 2 == 0) {
+					return true;
+				}
+			}
+		}
 
 		return false;
 	}
@@ -101,13 +115,13 @@ public class Board {
 		return true;
 	}
 	
-	public Board(byte size) {
+	public Board(int size) {
 		this.size = size;
-		board = new byte[size][size];
+		board = new int[size][size];
 	}
 	public Board(Board b) {
 		this.size = b.size;
-		this.board = new byte[b.size][b.size];
+		this.board = new int[b.size][b.size];
 		for (int i=0; i<b.size; i++) {
 			for (int j=0; j<b.size; j++) {
 				this.board[i][j] = b.getBoard()[i][j];
@@ -127,7 +141,7 @@ public class Board {
 					for(int i=0; i<vals.length; i++) {
 						if (vals[i].equals(" "))
 							vals[i] = "0";
-						this.board[lines][i] = Byte.parseByte(vals[i]);
+						this.board[lines][i] = Integer.parseInt(vals[i]);
 					}
 					lines++;
 				}

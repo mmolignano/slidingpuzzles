@@ -3,16 +3,15 @@ import java.util.Random;
 
 
 public class GenerateRandomBoard {
-	public static Board generateBoard(byte size) {
+	public static Board generateBoard(int size) {
 		
 		Board b = new Board(size);
 		do {
-			byte[][] board = new byte[size][size];
+			int[][] board = new int[size][size];
 			ArrayList<Integer> nums = generateRandomSequence(size * size);
 			for (int i=0; i<size; i++) {
 				for (int j=0; j<size; j++) {
-					int k = nums.remove(0);
-					board[i][j] = (byte) k;
+					board[i][j] = nums.remove(0);
 				}
 			}
 			b.setBoard(board);
@@ -38,7 +37,7 @@ public class GenerateRandomBoard {
 		return arr;
 	}
 	public static void main(String [] args){
-		System.out.println(generateBoard((byte)20));
+		System.out.println(generateBoard(4));
 	}
 	
 }

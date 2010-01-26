@@ -1,26 +1,24 @@
 import java.util.ArrayList;
 
-public class Node {
+public class Node implements Comparable<Node>{
 	Board board;
-	short depth;
-	short cost;
-	ArrayList<Node> children;
-	byte [] priorMoves;
+	int depth;
+	int cost;
+	int [] priorMoves;
 	Direction dir;
 
-	public Node(Board b, short depth, byte [] priorMoves, byte row, byte col, Direction dir) {
+	public Node(Board b, int depth, int [] priorMoves, int row, int col, Direction dir) {
 		board = b;
 		this.depth = depth;
 		this.cost = -1;
-		children = new ArrayList<Node>();
-		this.priorMoves = new byte[depth];
+		this.priorMoves = new int[depth];
 		for (int i=0; i<priorMoves.length; i++) {
 			this.priorMoves[i] = priorMoves[i];
 		}
 		this.dir = dir;
 		// The board has already changed by now!
 		if(depth !=0)
-			this.priorMoves[depth-1] = (byte) ((this.board.getSize()*row) + col + 1);
+			this.priorMoves[depth-1] = (this.board.getSize()*row) + col + 1;
 	}
 
 	
@@ -31,18 +29,19 @@ public class Node {
 
 
 
-	public void setCost(byte cost) {
+	public void setCost(int cost) {
 		this.cost = cost;
 	}
 
 
 
-	public void expand() {
-		byte row = 0;
-		byte col = 0;
+	public ArrayList<Node> expand() {
+		int row = 0;
+		int col = 0;
+		ArrayList<Node> children = new ArrayList<Node>();
 		if (children.size() == 0) {
-			for(byte i=0; i<board.getSize(); i++) {
-				for(byte j=0; j<board.getSize(); j++) {
+			for(int i=0; i<board.getSize(); i++) {
+				for(int j=0; j<board.getSize(); j++) {
 					if (board.getBoard()[i][j] == 0) {
 						row = i;
 						col = j;
@@ -52,24 +51,25 @@ public class Node {
 			if (row != 0 && (this.dir == null || this.dir != Direction.DOWN)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.UP);
-				children.add(new Node(newBoard, (short)(depth+1), this.priorMoves, (byte)(row-1), col, Direction.UP));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row-1, col, Direction.UP));
 			}
 			if (col != 0 && (this.dir == null || this.dir != Direction.RIGHT)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.LEFT);
-				children.add(new Node(newBoard, (short)(depth+1), this.priorMoves, row, (byte)(col-1), Direction.LEFT));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row, col-1, Direction.LEFT));
 			}
 			if (row != board.getSize()-1 && (this.dir == null || this.dir != Direction.UP)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.DOWN);
-				children.add(new Node(newBoard, (short)(depth+1), this.priorMoves, (byte)(row+1), col, Direction.DOWN));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row+1, col, Direction.DOWN));
 			}
 			if (col != board.getSize()-1 && (this.dir == null || this.dir != Direction.LEFT)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.RIGHT);
-				children.add(new Node(newBoard, (short)(depth+1), this.priorMoves, row, (byte)(col+1), Direction.RIGHT));
+				children.add(new Node(newBoard, depth+1, this.priorMoves, row, col+1, Direction.RIGHT));
 			}
 		}
+		return children;
 	}
 	
 	public String toString() {
@@ -88,16 +88,19 @@ public class Node {
 		return depth;
 	}
 
-	public void setDepth(short depth) {
+	public void setDepth(int depth) {
 		this.depth = depth;
 	}
 
-	public ArrayList<Node> getChildren() {
-		return children;
-	}
 
-	public void setChildren(ArrayList<Node> children) {
-		this.children = children;
+
+	@Override
+	public int compareTo(Node other) {
+		if (this.cost < other.getCost())
+			return -1;
+		if (this.cost > other.getCost())
+			return 1;
+		return 0;
 	}
 
 }
