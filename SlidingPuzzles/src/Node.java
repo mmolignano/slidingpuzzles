@@ -4,12 +4,12 @@ import java.util.Collection;
 public class Node implements Comparable<Node>{
 	Board board;
 	short depth;
-	byte cost;
+	short cost;
 	byte [] priorMoves;
 	Direction dir;
 
 
-	public Node(Board b, short depth, byte [] priorMoves, int row, int col, Direction dir) {
+	public Node(Board b, short depth, byte [] priorMoves, byte row, byte col, Direction dir) {
 		board = b;
 		this.depth = depth;
 		this.cost = -1;
@@ -25,7 +25,7 @@ public class Node implements Comparable<Node>{
 
 	
 	
-	public byte getCost() {
+	public short getCost() {
 		return cost;
 	}
 
@@ -37,12 +37,12 @@ public class Node implements Comparable<Node>{
 
 
 	public Collection<Node> expand() {
-		int row = 0;
-		int col = 0;
+		byte row = 0;
+		byte col = 0;
 		ArrayList<Node> children = new ArrayList<Node>();
 		if (children.size() == 0) {
-			for(int i=0; i<board.getSize(); i++) {
-				for(int j=0; j<board.getSize(); j++) {
+			for(byte i=0; i<board.getSize(); i++) {
+				for(byte j=0; j<board.getSize(); j++) {
 					if (board.getBoard()[i][j] == 0) {
 						row = i;
 						col = j;
@@ -52,22 +52,22 @@ public class Node implements Comparable<Node>{
 			if (row != 0 && (this.dir == null || this.dir != Direction.DOWN)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.UP);
-				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, row-1, col, Direction.UP));
+				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, (byte)(row-1), col, Direction.UP));
 			}
 			if (col != 0 && (this.dir == null || this.dir != Direction.RIGHT)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.LEFT);
-				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, row, col-1, Direction.LEFT));
+				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, row, (byte)(col-1), Direction.LEFT));
 			}
 			if (row != board.getSize()-1 && (this.dir == null || this.dir != Direction.UP)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.DOWN);
-				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, row+1, col, Direction.DOWN));
+				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, (byte)(row+1), col, Direction.DOWN));
 			}
 			if (col != board.getSize()-1 && (this.dir == null || this.dir != Direction.LEFT)) {
 				Board newBoard = new Board(this.board);
 				newBoard.moveSpace(row, col, Direction.RIGHT);
-				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, row, col+1, Direction.RIGHT));
+				children.add(new Node(newBoard, (short) (depth+1), this.priorMoves, row, (byte)(col+1), Direction.RIGHT));
 			}
 		}
 		return children;
