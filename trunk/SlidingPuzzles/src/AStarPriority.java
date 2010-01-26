@@ -1,0 +1,93 @@
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+
+
+public class AStarPriority {
+	Heuristic heuristic;
+	PriorityQueue<Node> nodes;
+	int expanded = 0;
+	int children = 0;
+	
+	public AStarPriority(Heuristic h) {
+		this.heuristic = h;
+		this.nodes = new PriorityQueue<Node>();
+	}
+	
+	public int[] run(Board b, int scale) {
+		if (!b.isSolvable()) {
+			System.out.println("Sorry, it looks like this puzzle is IMPOSSIBLE to solve.");
+			return null;
+		}
+		int row = 0;
+		int col = 0;
+		for (int i=0; i<b.getBoard().length; i++) {
+			for (int j=0; j<b.getBoard().length; j++) {
+				if (b.getBoard()[i][j] == 0) {
+					row = i;
+					col = j;
+				}
+			}
+		}
+		int [] empty = new int [0];
+		Node root = new Node(b, 0, empty, row, col, null);
+		setCost(root, scale);
+		nodes.add(root);
+		Node leastCostNode = root;
+		long before = System.currentTimeMillis();
+		
+		while(true) {
+			leastCostNode = nodes.remove();
+			if (isFinishState(leastCostNode)) {
+				return calculateStatistics(before, children, expanded, leastCostNode);
+			}
+					
+			try {
+				ArrayList <Node> subNodes = leastCostNode.expand();
+				expanded++;
+				for (Node n : subNodes) {
+					setCost(n, scale);
+					if (isFinishState(n)) {
+						return calculateStatistics(before, children, expanded, n);
+					}
+				}
+				
+				nodes.addAll(subNodes);
+				
+				if (expanded % 5000 == 0) {
+					System.out.println("Expansions: " + expanded);
+					System.out.println("Nodes: " + nodes.size());
+					System.out.println("Board: \n" + leastCostNode); 
+				} 
+				children += subNodes.size();
+				
+				
+			} catch (OutOfMemoryError err) {
+				System.err.println("Oops, ran out of memory.");
+				return null;
+			}
+			
+		}
+	}
+	
+	private int[] calculateStatistics(long startTime, int children, int expanded, Node end) {
+		System.out.println("Depth: " + end.getDepth());
+		double total = 0;
+		total = (double)children / (double)expanded;
+		System.out.println("Average branching factor: " + total);
+		long after = System.currentTimeMillis();
+		double time = after-startTime;
+		time = (double)time / 1000.0;
+		System.out.println("Expanded " + expanded + 
+						   " nodes in " + time + 
+						   " seconds (" + ((double)expanded / time) + " nodes per second)");
+		return end.priorMoves;
+	}
+	
+	private boolean isFinishState(Node n) {
+		return heuristic.evaluate(n.getBoard()) == 0;
+	}
+	
+	public void setCost(Node n, int scale) {
+		n.setCost(n.getDepth() + scale*heuristic.evaluate(n.getBoard()));
+	}
+}
