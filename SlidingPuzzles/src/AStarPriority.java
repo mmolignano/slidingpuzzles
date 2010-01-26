@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.PriorityQueue;
 
 
@@ -30,7 +32,7 @@ public class AStarPriority {
 			}
 		}
 		byte [] empty = new byte [0];
-		Node root = new Node(b, (short) 0, empty, row, col, null);
+		Node root = new Node(b, (short) 0, empty, row, col, null, null);
 		setCost(root, scale);
 		nodes.add(root);
 		Node leastCostNode = root;
@@ -43,7 +45,7 @@ public class AStarPriority {
 			}
 					
 			try {
-				ArrayList <Node> subNodes = leastCostNode.expand();
+				Collection <Node> subNodes = leastCostNode.expand();
 				expanded++;
 				for (Node n : subNodes) {
 					setCost(n, scale);
@@ -63,8 +65,19 @@ public class AStarPriority {
 				
 				
 			} catch (OutOfMemoryError err) {
-				System.err.println("Oops, ran out of memory.");
-				return null;
+				System.out.println("Not enough memory.  Stuff is going to be slow.");
+				Node n = nodes.peek();
+				Iterator<Node> iter = nodes.iterator();
+				while(iter.hasNext()) {
+					n = iter.next();
+				}
+				Node parent = n.getParent();
+				for (Node child : parent.getChildren()) {
+					nodes.remove(child);
+				}
+				parent.killChildren();
+				nodes.remove(parent);
+				nodes.add(parent);
 			}
 			
 		}
