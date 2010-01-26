@@ -5,21 +5,21 @@ import java.io.IOException;
 
 
 public class Board {
-	int size;
-	int [][] board;
-	public int getSize() {
+	byte size;
+	byte [][] board;
+	public byte getSize() {
 		return size;
 	}
 
-	public void setSize(int size) {
+	public void setSize(byte size) {
 		this.size = size;
 	}
 
-	public int[][] getBoard() {
+	public byte[][] getBoard() {
 		return board;
 	}
 
-	public void setBoard(int[][] board) {
+	public void setBoard(byte[][] board) {
 		this.board = board;
 	}
 	public String toString() {
@@ -101,13 +101,13 @@ public class Board {
 		return true;
 	}
 	
-	public Board(int size) {
+	public Board(byte size) {
 		this.size = size;
-		board = new int[size][size];
+		board = new byte[size][size];
 	}
 	public Board(Board b) {
 		this.size = b.size;
-		this.board = new int[b.size][b.size];
+		this.board = new byte[b.size][b.size];
 		for (int i=0; i<b.size; i++) {
 			for (int j=0; j<b.size; j++) {
 				this.board[i][j] = b.getBoard()[i][j];
@@ -127,7 +127,7 @@ public class Board {
 					for(int i=0; i<vals.length; i++) {
 						if (vals[i].equals(" "))
 							vals[i] = "0";
-						this.board[lines][i] = Integer.parseInt(vals[i]);
+						this.board[lines][i] = Byte.parseByte(vals[i]);
 					}
 					lines++;
 				}
