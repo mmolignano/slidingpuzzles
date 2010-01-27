@@ -14,8 +14,9 @@ public class Main {
 		
 		int size = Integer.parseInt(args[0]);
 		
-		if (args.length == 2 && args[1] == "--rand") {
+		if (args.length == 2 && args[1].equals("--rand")) {
 			System.out.println(GenerateRandomBoard.generateBoard(size));
+			return;
 		}
 		
 		String filename = args[1];
