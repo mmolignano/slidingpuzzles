@@ -3,15 +3,21 @@ import java.util.ArrayList;
 
 public class Main {
 	public static void main(String [] args) {
-		if (args.length == 0 || args.length!= 2 || args.length !=3 || args[0].equals("help")) {
+		if (args.length == 0 || (args.length!= 2 && args.length != 3) || args[0].equals("--help")) {
 			System.out.println("Usage:");
 			System.out.println("java -Xmx2000m -jar npuzzle.jar (BOARD_SIZE) (FILENAME) [--best | --fast]");
 			System.out.println("Defaults to fast mode if one of best and fast is not selected.");
-			System.out.println("The first argument after java allocates the JVM heap space.  Give it as much as you can!");
+			System.out.println("The first argument after java allocates the JVM heap space.  Give it as much as you can!  The above example gives it 2GB.");
+			System.out.println("\nYou can also use java -jar npuzzle.jar (BOARD_SIZE) --rand to generate a random board.");
 			return;
 		}
 		
 		int size = Integer.parseInt(args[0]);
+		
+		if (args.length == 2 && args[1] == "--rand") {
+			System.out.println(GenerateRandomBoard.generateBoard(size));
+		}
+		
 		String filename = args[1];
 		boolean fast = true;
 		if (args[2].equals("--best")) {
@@ -63,7 +69,7 @@ public class Main {
 		String answer = alg.run(b, scale, maxDepth);
 		
 		if (answer != null) {
-			System.out.println("Answer: " + answer);
+			System.out.println(answer.substring(0,answer.length()-1));
 		} else {
 			System.out.println("It seems there was no solution within a depth of " + maxDepth);
 		}
