@@ -46,12 +46,21 @@ public class Main {
 		Heuristic h = new ManhattanDistance();
 		
 		AStarPriority alg = new AStarPriority(h);
+		int maxDepth = 31;
+		if (size == 4) {
+			maxDepth = 80;
+		} else if (size == 5) {
+			maxDepth = 200;
+		}
+		
 		int scale = 1;
 		if(fast) {
 			if (size == 4) {
-				scale = 3;
+				scale = 1;
+				maxDepth = 240;
 			} else if (size == 5) {
-				scale = 8;
+				scale = 1;
+				maxDepth = 1600;
 			}
 		}
 		/*
@@ -60,14 +69,9 @@ public class Main {
 		 * 15 puzzle: 80
 		 * 24 puzzle: assumed to be 200
 		 */
-		int maxDepth = 31;
-		if (size == 4) {
-			maxDepth = 80;
-		} else if (size == 5) {
-			maxDepth = 200;
-		}
+
 		
-		String answer = alg.run(b, scale, maxDepth);
+		String answer = alg.run(b, scale, maxDepth, fast);
 		
 		if (answer != null) {
 			System.out.println(answer.substring(0,answer.length()-2));

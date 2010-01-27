@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.PriorityQueue;
 
@@ -5,15 +6,17 @@ import java.util.PriorityQueue;
 public class AStarPriority {
 	Heuristic heuristic;
 	PriorityQueue<Node> nodes;
+	ArrayList<Node> closedNodes;
 	int expanded = 0;
 	int children = 0;
 	
 	public AStarPriority(Heuristic h) {
 		this.heuristic = h;
 		this.nodes = new PriorityQueue<Node>();
+		this.closedNodes = new ArrayList<Node>();
 	}
 	
-	public String run(Board b, int scale, int maxDepth) {
+	public String run(Board b, int scale, int maxDepth, boolean fast) {
 		Runtime runtime = Runtime.getRuntime();
 		if (!b.isSolvable()) {
 			System.out.println("Sorry, it looks like this puzzle is IMPOSSIBLE to solve.");
@@ -40,6 +43,10 @@ public class AStarPriority {
 				return null;
 			}
 			leastCostNode = nodes.remove();
+			if (closedNodes.contains(leastCostNode)) {
+				continue;
+			}
+			this.closedNodes.add(leastCostNode);
 			if (isFinishState(leastCostNode)) {
 				return calculateStatistics(before, children, expanded, leastCostNode);
 			}
@@ -69,13 +76,15 @@ public class AStarPriority {
 							newNodes.add(nodes.remove());
 							numToRemove--;
 						}
-						for (Node n : nodes) {
-							n.backUpToParent();
-							if (n.parent != null)
-								newNodes.add(n.parent);
+						if (!fast) {
+							for (Node n : nodes) {
+								n.backUpToParent();
+								if (n.parent != null)
+									newNodes.add(n.parent);
+							}
+							nodes = newNodes;
+							runtime.gc();
 						}
-						nodes = newNodes;
-						runtime.gc();
 						System.out.println(nodes.size() + " nodes remain.");
 					}
 				} 
