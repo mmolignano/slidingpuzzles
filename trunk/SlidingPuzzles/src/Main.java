@@ -27,7 +27,8 @@ public class Main {
 
 		Board b = new Board((byte)size);
 		
-		if (b.size > 4) {
+		Runtime r = Runtime.getRuntime();
+		if (b.size > 3){
 			try {
 				ArrayList<Integer> arr = new ArrayList<Integer>();
 				System.out.println("Claiming heap space by filling it with trash.");
@@ -36,11 +37,11 @@ public class Main {
 				}
 			} catch (OutOfMemoryError err) {
 				System.out.println("Ok, let's go.");
+				r.gc();
 			}
 		}
 		
 		b.parseFile(filename);
-		Runtime r = Runtime.getRuntime();
 		System.out.println("Max memory allotted: " + (r.totalMemory() / 1000000.0) + "MB");
 		
 		Heuristic h = new ManhattanDistance();
