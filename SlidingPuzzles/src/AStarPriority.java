@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.PriorityQueue;
 
@@ -6,14 +5,12 @@ import java.util.PriorityQueue;
 public class AStarPriority {
 	Heuristic heuristic;
 	PriorityQueue<Node> nodes;
-	ArrayList<Node> closedNodes;
 	int expanded = 0;
 	int children = 0;
 	
 	public AStarPriority(Heuristic h) {
 		this.heuristic = h;
 		this.nodes = new PriorityQueue<Node>();
-		this.closedNodes = new ArrayList<Node>();
 	}
 	
 	public String run(Board b, int scale, int maxDepth, boolean fast) {
@@ -43,10 +40,6 @@ public class AStarPriority {
 				return null;
 			}
 			leastCostNode = nodes.remove();
-			if (closedNodes.contains(leastCostNode)) {
-				continue;
-			}
-			this.closedNodes.add(leastCostNode);
 			if (isFinishState(leastCostNode)) {
 				return calculateStatistics(before, children, expanded, leastCostNode);
 			}
