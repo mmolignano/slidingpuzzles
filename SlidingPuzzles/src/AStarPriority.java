@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.PriorityQueue;
 
@@ -5,12 +6,14 @@ import java.util.PriorityQueue;
 public class AStarPriority {
 	Heuristic heuristic;
 	PriorityQueue<Node> nodes;
+	ArrayList<Node> closedNodes;
 	int expanded = 0;
 	int children = 0;
 	
 	public AStarPriority(Heuristic h) {
 		this.heuristic = h;
 		this.nodes = new PriorityQueue<Node>();
+		this.closedNodes = new ArrayList<Node>();
 	}
 	
 	public String run(Board b, int scale, int maxDepth, boolean fast) {
@@ -52,10 +55,13 @@ public class AStarPriority {
 					if (isFinishState(n)) {
 						return calculateStatistics(before, children, expanded, n);
 					}
+					
 				}
 				
 				nodes.addAll(subNodes);
+				leastCostNode.setCost(Short.MAX_VALUE);
 				
+				nodes.add(leastCostNode);
 				if (expanded % 5000 == 0) {
 					System.out.println("Expansions: " + expanded);
 					System.out.println("Nodes: " + nodes.size());
@@ -64,16 +70,28 @@ public class AStarPriority {
 					if (runtime.freeMemory() < runtime.totalMemory()/4) {
 						System.out.println("Backing up the last 50% of nodes.");
 						PriorityQueue<Node> newNodes = new PriorityQueue<Node>();
-						double numToRemove = nodes.size() * 0.5 ;
-						while (numToRemove > 0) {							
+						double numToKeep = nodes.size() * 0.5 ;
+						while (numToKeep > 0) {							
 							newNodes.add(nodes.remove());
-							numToRemove--;
+							numToKeep--;
 						}
 						if (!fast) {
 							for (Node n : nodes) {
-								n.backUpToParent();
-								if (n.parent != null)
+								if (n.getCost() == Short.MAX_VALUE) {
+									newNodes.add(n);
+								}
+								
+								if (n.getCost() < n.parent.getCost()) {
+									n.parent.setCost(n.getCost());
+									nodes.remove(n.parent);
 									newNodes.add(n.parent);
+								}
+								
+								if (n.parent != null) {
+									n.parent = null;
+									//newNodes.add(n.parent);
+									//closedNodes.remove(n.parent);
+								}
 							}
 							nodes = newNodes;
 							runtime.gc();

@@ -92,16 +92,6 @@ public class Node implements Comparable<Node>{
 		this.depth = depth;
 	}
 
-	public void backUpToParent() {
-		if (this.parent == null) {
-			return;
-		}
-		if (this.parent.getCost() > this.cost) {
-			this.parent.setCost(this.cost);
-		}
-		this.parent = null;
-	}
-
 	public short lastMove() {
 		int row = 0;
 		int col = 0;
