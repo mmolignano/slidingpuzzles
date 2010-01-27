@@ -69,7 +69,7 @@ public class Main {
 		String answer = alg.run(b, scale, maxDepth);
 		
 		if (answer != null) {
-			System.out.println(answer.substring(0,answer.length()-1));
+			System.out.println(answer.substring(0,answer.length()-2));
 		} else {
 			System.out.println("It seems there was no solution within a depth of " + maxDepth);
 		}
