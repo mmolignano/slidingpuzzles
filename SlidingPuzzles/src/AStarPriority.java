@@ -1,18 +1,19 @@
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.PriorityQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 
 public class AStarPriority {
 	Heuristic heuristic;
-	PriorityQueue<Node> nodes;
+	PriorityBlockingQueue<Node> nodes;
 	ArrayList<Node> closedNodes;
 	int expanded = 0;
 	int children = 0;
 	
 	public AStarPriority(Heuristic h) {
 		this.heuristic = h;
-		this.nodes = new PriorityQueue<Node>();
+		this.nodes = new PriorityBlockingQueue<Node>();
 		this.closedNodes = new ArrayList<Node>();
 	}
 	
@@ -69,7 +70,7 @@ public class AStarPriority {
 					System.out.println("Currently using:  " + ((runtime.totalMemory()-runtime.freeMemory()) / 1000000.0) + "MB");
 					if (runtime.freeMemory() < runtime.totalMemory()/4) {
 						System.out.println("Backing up the last 50% of nodes.");
-						PriorityQueue<Node> newNodes = new PriorityQueue<Node>();
+						PriorityBlockingQueue<Node> newNodes = new PriorityBlockingQueue<Node>();
 						double numToKeep = nodes.size() * 0.5 ;
 						while (numToKeep > 0) {							
 							newNodes.add(nodes.remove());
@@ -86,12 +87,7 @@ public class AStarPriority {
 									nodes.remove(n.parent);
 									newNodes.add(n.parent);
 								}
-								
-								if (n.parent != null) {
-									n.parent = null;
-									//newNodes.add(n.parent);
-									//closedNodes.remove(n.parent);
-								}
+
 							}
 							nodes = newNodes;
 							runtime.gc();
