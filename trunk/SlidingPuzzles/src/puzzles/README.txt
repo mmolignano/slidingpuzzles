@@ -47,6 +47,14 @@ Nodes expanded: 6572.2
 Time for expansions: 0.1774
 Average nodes/sec: 509786.103
 
+24 Puzzle Stats (Over 6 puzzles):
+Average Depth: 116
+Average branching factor: 2.274600
+Average number of nodes expanded: 22798035
+Average amount of time spent: 290.833 s
+Average nodes per second: 81445
+
+Instructions:
 To compile our project, navigate to the directory and excecute "javac NPuzzle.java".
 Usage:
 java -Xmx2000m -jar npuzzle.jar (BOARD_SIZE) (FILENAME) [manhattan | misplaced | raw] [--fast | --best]
