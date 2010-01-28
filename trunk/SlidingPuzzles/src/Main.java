@@ -78,6 +78,8 @@ public class Main {
 			maxDepth = 200;
 		}
 		
+		System.out.println(b);
+		
 		String answer = alg.run(b, scale, maxDepth);
 		
 		if (answer != null) {
