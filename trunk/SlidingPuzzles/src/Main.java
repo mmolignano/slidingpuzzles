@@ -27,8 +27,7 @@ public class Main {
 
 		Board b = new Board((byte)size);
 		
-		Runtime r = Runtime.getRuntime();
-		if (b.size > 3){
+		if (b.size > 4) {
 			try {
 				ArrayList<Integer> arr = new ArrayList<Integer>();
 				System.out.println("Claiming heap space by filling it with trash.");
@@ -37,31 +36,22 @@ public class Main {
 				}
 			} catch (OutOfMemoryError err) {
 				System.out.println("Ok, let's go.");
-				r.gc();
 			}
 		}
 		
 		b.parseFile(filename);
+		Runtime r = Runtime.getRuntime();
 		System.out.println("Max memory allotted: " + (r.totalMemory() / 1000000.0) + "MB");
 		
 		Heuristic h = new ManhattanDistance();
 		
 		AStarPriority alg = new AStarPriority(h);
-		int maxDepth = 31;
-		if (size == 4) {
-			maxDepth = 80;
-		} else if (size == 5) {
-			maxDepth = 200;
-		}
-		
 		int scale = 1;
 		if(fast) {
 			if (size == 4) {
-				scale = 1;
-				maxDepth = 240;
+				scale = 3;
 			} else if (size == 5) {
-				scale = 1;
-				maxDepth = 1600;
+				scale = 8;
 			}
 		}
 		/*
@@ -70,9 +60,14 @@ public class Main {
 		 * 15 puzzle: 80
 		 * 24 puzzle: assumed to be 200
 		 */
-
+		int maxDepth = 31;
+		if (size == 4) {
+			maxDepth = 80;
+		} else if (size == 5) {
+			maxDepth = 200;
+		}
 		
-		String answer = alg.run(b, scale, maxDepth, fast);
+		String answer = alg.run(b, scale, maxDepth);
 		
 		if (answer != null) {
 			System.out.println(answer.substring(0,answer.length()-2));

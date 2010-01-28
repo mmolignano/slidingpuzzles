@@ -1,23 +1,19 @@
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.PriorityQueue;
-import java.util.concurrent.PriorityBlockingQueue;
 
 
 public class AStarPriority {
 	Heuristic heuristic;
-	PriorityBlockingQueue<Node> nodes;
-	ArrayList<Node> closedNodes;
+	PriorityQueue<Node> nodes;
 	int expanded = 0;
 	int children = 0;
 	
 	public AStarPriority(Heuristic h) {
 		this.heuristic = h;
-		this.nodes = new PriorityBlockingQueue<Node>();
-		this.closedNodes = new ArrayList<Node>();
+		this.nodes = new PriorityQueue<Node>();
 	}
 	
-	public String run(Board b, int scale, int maxDepth, boolean fast) {
+	public String run(Board b, int scale, int maxDepth) {
 		Runtime runtime = Runtime.getRuntime();
 		if (!b.isSolvable()) {
 			System.out.println("Sorry, it looks like this puzzle is IMPOSSIBLE to solve.");
@@ -56,13 +52,10 @@ public class AStarPriority {
 					if (isFinishState(n)) {
 						return calculateStatistics(before, children, expanded, n);
 					}
-					
 				}
 				
 				nodes.addAll(subNodes);
-				leastCostNode.setCost(Short.MAX_VALUE);
 				
-				nodes.add(leastCostNode);
 				if (expanded % 5000 == 0) {
 					System.out.println("Expansions: " + expanded);
 					System.out.println("Nodes: " + nodes.size());
@@ -70,28 +63,19 @@ public class AStarPriority {
 					System.out.println("Currently using:  " + ((runtime.totalMemory()-runtime.freeMemory()) / 1000000.0) + "MB");
 					if (runtime.freeMemory() < runtime.totalMemory()/4) {
 						System.out.println("Backing up the last 50% of nodes.");
-						PriorityBlockingQueue<Node> newNodes = new PriorityBlockingQueue<Node>();
-						double numToKeep = nodes.size() * 0.5 ;
-						while (numToKeep > 0) {							
+						PriorityQueue<Node> newNodes = new PriorityQueue<Node>();
+						double numToRemove = nodes.size() * 0.5 ;
+						while (numToRemove > 0) {							
 							newNodes.add(nodes.remove());
-							numToKeep--;
+							numToRemove--;
 						}
-						if (!fast) {
-							for (Node n : nodes) {
-								if (n.getCost() == Short.MAX_VALUE) {
-									newNodes.add(n);
-								}
-								
-								if (n.getCost() < n.parent.getCost()) {
-									n.parent.setCost(n.getCost());
-									nodes.remove(n.parent);
-									newNodes.add(n.parent);
-								}
-
-							}
-							nodes = newNodes;
-							runtime.gc();
-						}
+//						for (Node n : nodes) {
+//							n.backUpToParent();
+//							if (n.parent != null)
+//								newNodes.add(n.parent);
+//						}
+						nodes = newNodes;
+						runtime.gc();
 						System.out.println(nodes.size() + " nodes remain.");
 					}
 				} 
