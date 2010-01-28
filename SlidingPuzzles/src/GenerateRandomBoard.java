@@ -1,8 +1,17 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-
+/**
+ * This class helps generate a random board for our program to solve
+ * @author Thomas Liu (kangchao@wpi.edu), Rui Dai (ruidai@wpi.edu) Michael Molignano (mikem@wpi.edu), Kevin Nolan (knolan@wpi.edu)
+ *
+ */
 public class GenerateRandomBoard {
+	/**
+	 * A static function to generate a random board of a given size
+	 * @param size the size of the board
+	 * @return a random Board of the given size
+	 */
 	public static Board generateBoard(int size) {
 		
 		Board b = new Board((byte)size);
@@ -18,6 +27,12 @@ public class GenerateRandomBoard {
 		} while(!b.isSolvable());
 		return b;
 	}
+	
+	/**
+	 * Helper function to generate a random sequence
+	 * @param range a given range
+	 * @return an array list of a random sequence
+	 */
 	private static ArrayList<Byte> generateRandomSequence(int range) {
 		ArrayList<Byte> arr = new ArrayList<Byte>();
 		Random r = new Random();
