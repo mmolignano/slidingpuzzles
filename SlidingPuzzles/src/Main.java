@@ -62,7 +62,7 @@ public class Main {
 			if (size == 4) {
 				scale = 3;
 			} else if (size == 5) {
-				scale = 8;
+				scale = 1;
 			}
 		}
 		/*
