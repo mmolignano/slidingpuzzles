@@ -60,9 +60,9 @@ public class Main {
 		int scale = 1;
 		if(fast) {
 			if (size == 4) {
-				scale = 1;
+				scale = 3;
 			} else if (size == 5) {
-				scale = 1;
+				scale = 8;
 			}
 		}
 		/*
