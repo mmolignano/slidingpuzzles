@@ -13,7 +13,7 @@ public class AStarPriority {
 		this.nodes = new PriorityQueue<Node>();
 	}
 	
-	public String run(Board b, int scale, int maxDepth) {
+	public String run(Board b, int scale, int maxDepth, boolean fast) {
 		Runtime runtime = Runtime.getRuntime();
 		if (!b.isSolvable()) {
 			System.out.println("Sorry, it looks like this puzzle is IMPOSSIBLE to solve.");
@@ -60,13 +60,14 @@ public class AStarPriority {
 							newNodes.add(nodes.remove());
 							numToRemove--;
 						}
-						for (Node n : nodes) {
-							n.backUpToParent();
-							if (n.parent != null) {
-								newNodes.add(n.parent);
-								n.parent = null;
+						if (!fast) {
+							for (Node n : nodes) {
+								n.backUpToParent();
+								if (n.parent != null) {
+									newNodes.add(n.parent);
+									n.parent = null;
+								}
 							}
-			
 						}
 						nodes = newNodes;
 						runtime.gc();
