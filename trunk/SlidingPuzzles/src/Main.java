@@ -3,9 +3,9 @@ import java.util.ArrayList;
 
 public class Main {
 	public static void main(String [] args) {
-		if (args.length == 0 || (args.length!= 2 && args.length != 3) || args[0].equals("--help")) {
+		if (args.length == 0 || (args.length!= 2 && args.length != 3 && args.length != 4) || args[0].equals("--help")) {
 			System.out.println("Usage:");
-			System.out.println("java -Xmx2000m -jar npuzzle.jar (BOARD_SIZE) (FILENAME)");
+			System.out.println("java -Xmx2000m -jar npuzzle.jar (BOARD_SIZE) (FILENAME) [manhattan | misplaced | raw] [--fast | --best]");
 			System.out.println("Defaults to fast mode if one of best and fast is not selected.");
 			System.out.println("The first argument after java allocates the JVM heap space.  Give it as much as you can!  The above example gives it 2GB.");
 			System.out.println("\nYou can also use java -jar npuzzle.jar (BOARD_SIZE) --rand to generate a random board.");
@@ -24,8 +24,16 @@ public class Main {
 		Heuristic h = new ManhattanDistance();
 		if (args[2].equals("misplaced")) {
 			h = new MisplacedHeuristic();
+			System.out.println("Using misplaced heurisitic.");
 		} else if (args[2].equals("raw")) {
 			h = new RawDistance();
+			System.out.println("Using raw distance heurisitic.");
+		} else {
+			System.out.println("Using manhattan distance heurisitic.");
+		}
+		
+		if (args[3].equals("--best")) {
+			fast = false;
 		}
 
 		Board b = new Board((byte)size);
