@@ -1,5 +1,10 @@
 public class RawDistance implements Heuristic{
 
+
+	/**
+	 * @param b  the board as input to evaluate
+	 * @return the raw distance evaluation
+	 */
 	public int evaluate(Board b) {
 		int value = 0;
 		for (int i = 0; i < b.getSize(); i++) {
