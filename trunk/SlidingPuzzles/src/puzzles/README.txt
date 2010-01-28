@@ -46,3 +46,14 @@ Average branching factor: 2.129012572
 Nodes expanded: 6572.2
 Time for expansions: 0.1774
 Average nodes/sec: 509786.103
+
+To compile our project, navigate to the directory and excecute "javac NPuzzle.java".
+Usage:
+java -Xmx2000m -jar npuzzle.jar (BOARD_SIZE) (FILENAME) [manhattan | misplaced | raw] [--fast | --best]
+Defaults to fast mode if one of best and fast is not selected.
+The first argument after java allocates the JVM heap space.  Give it as much as you can!  The above example gives it 2GB.
+You can also use java -jar npuzzle.jar (BOARD_SIZE) --rand to generate a random board.
+
+We solved the memory and speed problem with a few techniques:
+-We removed immediate backtracking.  This means that an expanded node cannot create it's parent as one of it's children, before that node is expanded.
+-
