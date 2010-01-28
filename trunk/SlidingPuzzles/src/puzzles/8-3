@@ -1,3 +1,23 @@
 1, ,6
 5,4,2
 8,7,3
+
+Misplaced
+Inversions: 12
+Depth: 19
+Average branching factor: 1.7346231591105978
+Expanded 3463 nodes in 0.047 seconds (73680.85106382979 nodes per second)
+5, 8, 7, 4, 5, 2, 3, 6, 9, 8, 7, 4, 5, 2, 3, 6, 5, 8, 9
+
+Manhattan
+Depth: 19
+Average branching factor: 1.6919191919191918
+Expanded 594 nodes in 0.032 seconds (18562.5 nodes per second)
+5, 8, 7, 4, 5, 2, 3, 6, 9, 8, 7, 4, 5, 2, 3, 6, 5, 8, 9
+
+Raw Distance
+Depth: 19
+Average branching factor: 1.679439941046426
+Expanded 1357 nodes in 0.031 seconds (43774.1935483871 nodes per second)
+5, 8, 7, 4, 5, 2, 3, 6, 9, 8, 7, 4, 5, 2, 3, 6, 5, 8, 9
+
