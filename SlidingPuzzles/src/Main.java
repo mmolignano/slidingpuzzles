@@ -74,8 +74,12 @@ public class Main {
 		int maxDepth = 31;
 		if (size == 4) {
 			maxDepth = 80;
+			if (fast)
+				maxDepth = 240;
 		} else if (size == 5) {
 			maxDepth = 200;
+			if (fast)
+				maxDepth = 1600;
 		}
 		
 		System.out.println(b);
