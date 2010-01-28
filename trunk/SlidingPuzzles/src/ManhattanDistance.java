@@ -1,4 +1,8 @@
-
+/**
+ * Manhattan distance heuristic that implements Heuristic
+ * @author Thomas Liu (kangchao@wpi.edu), Rui Dai (ruidai@wpi.edu) Michael Molignano (mikem@wpi.edu), Kevin Nolan (knolan@wpi.edu)
+ *
+ */
 public class ManhattanDistance implements Heuristic {
 
 	@Override
