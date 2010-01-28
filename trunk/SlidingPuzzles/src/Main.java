@@ -38,7 +38,7 @@ public class Main {
 
 		Board b = new Board((byte)size);
 		
-		if (b.size > 4) {
+		if (b.size > 3) {
 			try {
 				ArrayList<Integer> arr = new ArrayList<Integer>();
 				System.out.println("Claiming heap space by filling it with trash.");
@@ -80,13 +80,13 @@ public class Main {
 		
 		System.out.println(b);
 		
-		String answer = alg.run(b, scale, maxDepth);
+		String answer = alg.run(b, scale, maxDepth, fast);
 		
 		if (answer != null) {
 			System.out.println(answer.substring(0,answer.length()-2));
 		} else {
 			System.out.println("It seems there was no solution within a depth of " + maxDepth);
 		}
-		
+
 	}
 }
