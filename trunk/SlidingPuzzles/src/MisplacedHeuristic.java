@@ -1,5 +1,6 @@
 /**
  * Misplaced heuristic that implements Heuristic 
+ * Definition: Misplaced counts the total tiles not in the correct position.
  * @author Thomas Liu (kangchao@wpi.edu), Rui Dai (ruidai@wpi.edu) Michael Molignano (mikem@wpi.edu), Kevin Nolan (knolan@wpi.edu)
  *
  */
