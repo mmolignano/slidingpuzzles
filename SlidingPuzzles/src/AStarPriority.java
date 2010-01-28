@@ -19,17 +19,8 @@ public class AStarPriority {
 			System.out.println("Sorry, it looks like this puzzle is IMPOSSIBLE to solve.");
 			return null;
 		}
-		byte row = 0;
-		byte col = 0;
-		for (byte i=0; i<b.getBoard().length; i++) {
-			for (byte j=0; j<b.getBoard().length; j++) {
-				if (b.getBoard()[i][j] == 0) {
-					row = i;
-					col = j;
-				}
-			}
-		}
-		Node root = new Node(b, (short) 0, row, col, null, null);
+
+		Node root = new Node(b, (short) 0, null, null);
 		setCost(root, scale);
 		nodes.add(root);
 		Node leastCostNode = root;
@@ -61,19 +52,22 @@ public class AStarPriority {
 					System.out.println("Nodes: " + nodes.size());
 					System.out.println("Board: \n" + leastCostNode);
 					System.out.println("Currently using:  " + ((runtime.totalMemory()-runtime.freeMemory()) / 1000000.0) + "MB");
-					if (runtime.freeMemory() < runtime.totalMemory()/4) {
+					if (runtime.freeMemory() < runtime.totalMemory()/3) {
 						System.out.println("Backing up the last 50% of nodes.");
 						PriorityQueue<Node> newNodes = new PriorityQueue<Node>();
-						double numToRemove = nodes.size() * 0.5 ;
+						double numToRemove = nodes.size() * 0.5;
 						while (numToRemove > 0) {							
 							newNodes.add(nodes.remove());
 							numToRemove--;
 						}
-//						for (Node n : nodes) {
-//							n.backUpToParent();
-//							if (n.parent != null)
-//								newNodes.add(n.parent);
-//						}
+						for (Node n : nodes) {
+							n.backUpToParent();
+							if (n.parent != null) {
+								newNodes.add(n.parent);
+								n.parent = null;
+							}
+			
+						}
 						nodes = newNodes;
 						runtime.gc();
 						System.out.println(nodes.size() + " nodes remain.");
