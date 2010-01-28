@@ -1,10 +1,12 @@
+/**
+ * Raw distance heuristic that implements Heuristic
+ * @author Thomas Liu (kangchao@wpi.edu), Rui Dai (ruidai@wpi.edu) Michael Molignano (mikem@wpi.edu), Kevin Nolan (knolan@wpi.edu)
+ * 
+ *
+ */
 public class RawDistance implements Heuristic{
 
 
-	/**
-	 * @param b  the board as input to evaluate
-	 * @return the raw distance evaluation
-	 */
 	public int evaluate(Board b) {
 		int value = 0;
 		for (int i = 0; i < b.getSize(); i++) {
