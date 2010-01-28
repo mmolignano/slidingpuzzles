@@ -5,7 +5,7 @@ public class Main {
 	public static void main(String [] args) {
 		if (args.length == 0 || (args.length!= 2 && args.length != 3) || args[0].equals("--help")) {
 			System.out.println("Usage:");
-			System.out.println("java -Xmx2000m -jar npuzzle.jar (BOARD_SIZE) (FILENAME) [--best | --fast]");
+			System.out.println("java -Xmx2000m -jar npuzzle.jar (BOARD_SIZE) (FILENAME)");
 			System.out.println("Defaults to fast mode if one of best and fast is not selected.");
 			System.out.println("The first argument after java allocates the JVM heap space.  Give it as much as you can!  The above example gives it 2GB.");
 			System.out.println("\nYou can also use java -jar npuzzle.jar (BOARD_SIZE) --rand to generate a random board.");
@@ -21,8 +21,11 @@ public class Main {
 		
 		String filename = args[1];
 		boolean fast = true;
-		if (args[2].equals("--best")) {
-			fast = false;
+		Heuristic h = new ManhattanDistance();
+		if (args[2].equals("misplaced")) {
+			h = new MisplacedHeuristic();
+		} else if (args[2].equals("raw")) {
+			h = new RawDistance();
 		}
 
 		Board b = new Board((byte)size);
@@ -43,7 +46,7 @@ public class Main {
 		Runtime r = Runtime.getRuntime();
 		System.out.println("Max memory allotted: " + (r.totalMemory() / 1000000.0) + "MB");
 		
-		Heuristic h = new ManhattanDistance();
+		
 		
 		AStarPriority alg = new AStarPriority(h);
 		int scale = 1;
