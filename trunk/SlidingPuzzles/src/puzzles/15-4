@@ -3,10 +3,20 @@
 11,14,12,5
 10,9,6,15
 
-Inversions: 36
+Misplaced:
+Depth: 46
+Average branching factor: 2.156728075346772
+Expanded 7341416 nodes in 69.55 seconds (105555.94536304817 nodes per second)
+5, 9, 10, 6, 7, 11, 12, 8, 7, 3, 2, 6, 10, 11, 7, 3, 2, 6, 10, 9, 13, 14, 15, 11, 12, 8, 7, 11, 10, 14, 13, 9, 5, 6, 10, 9, 13, 14, 15, 11, 10, 9, 13, 14, 15, 16
 
 Manhattan:
 Depth: 56
-Average branching factor: 2.08278955954323
-Expanded 4904 nodes in 0.765 seconds (6410.4575163398695 nodes per second)
+Average branching factor: 2.081600627697136
+Expanded 2549 nodes in 0.062 seconds (41112.903225806454 nodes per second)
 2, 3, 7, 8, 12, 11, 15, 14, 10, 11, 7, 6, 2, 1, 5, 6, 10, 9, 13, 14, 15, 16, 12, 8, 7, 11, 12, 8, 7, 11, 10, 9, 5, 6, 10, 14, 13, 9, 10, 6, 2, 1, 5, 6, 7, 3, 2, 1, 5, 6, 2, 3, 7, 8, 12, 16
+
+Raw:
+Depth: 48
+Average branching factor: 2.0938765785084583
+Expanded 8394 nodes in 0.202 seconds (41554.455445544554 nodes per second)
+7, 11, 12, 8, 7, 3, 2, 6, 5, 9, 10, 11, 7, 3, 2, 6, 10, 11, 12, 8, 7, 11, 15, 14, 13, 9, 10, 11, 15, 14, 13, 9, 5, 6, 10, 9, 13, 14, 10, 11, 15, 14, 13, 9, 10, 11, 15, 16
