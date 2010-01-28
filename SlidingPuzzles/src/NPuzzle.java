@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 public class NPuzzle {
 	public static void main(String [] args) {
+		// Parse input arguments
 		if (args.length == 0 || (args.length!= 2 && args.length != 3 && args.length != 4) || args[0].equals("--help")) {
 			System.out.println("Usage:");
 			System.out.println("java -Xmx2000m NPuzzle (BOARD_SIZE) (FILENAME) [manhattan | misplaced | raw] [--fast | --best]");
@@ -38,6 +39,10 @@ public class NPuzzle {
 
 		Board b = new Board((byte)size);
 		
+		/**
+		 * The JVM has a heap size by default and a max heap size.
+		 * This forces the JVM to allocate the most heap space that it can.
+		 */
 		if (b.size > 3) {
 			try {
 				ArrayList<Integer> arr = new ArrayList<Integer>();
@@ -52,11 +57,14 @@ public class NPuzzle {
 		
 		b.parseFile(filename);
 		Runtime r = Runtime.getRuntime();
-		System.out.println("Max memory allotted: " + (r.totalMemory() / 1000000.0) + "MB");
-		
 		
 		
 		AStarPriority alg = new AStarPriority(h);
+		
+		/*
+		 * If they want to go fast, run the 15 puzzle at 3x
+		 * We run the 24 puzzle at 1x with node chopping.
+		 */
 		int scale = 1;
 		if(fast) {
 			if (size == 4) {
@@ -82,8 +90,7 @@ public class NPuzzle {
 				maxDepth = 1600;
 		}
 		
-		System.out.println(b);
-		
+
 		String answer = alg.run(b, scale, maxDepth, fast);
 		
 		if (answer != null) {
