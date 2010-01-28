@@ -2,11 +2,21 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
+/**
+ * Class to encapsulate a board for an n-puzzle. 
+ * @author Thomas Liu (kangchao@wpi.edu), Rui Dai (ruidai@wpi.edu) Michael Molignano (mikem@wpi.edu), Kevin Nolan (knolan@wpi.edu)
+ *
+ */
 
 public class Board {
+	//The size of the board.
 	byte size;
+	//An array that holds the values on the board.
 	byte [][] board;
+	
+	/**
+	 * Getters and setters for the board and size.
+	 */
 	public byte getSize() {
 		return size;
 	}
@@ -22,6 +32,10 @@ public class Board {
 	public void setBoard(byte[][] board) {
 		this.board = board;
 	}
+	
+	/**
+	 * Returns a string representing an n-puzzle board, formatted correctly.
+	 */
 	public String toString() {
 		String s = "";
 		for(int i=0; i<board.length; i++) {
@@ -37,7 +51,10 @@ public class Board {
 		return s;
 	}
 	
-	
+	/**
+	 * Figures out if the n-puzzle board is solvable by counting inversions.
+	 * @return true if solvable, false otherwise.
+	 */
 	public boolean isSolvable() {
 		int[] arr = new int[size * size];
 		int inversions = 0;
@@ -45,12 +62,14 @@ public class Board {
 
 		int row = 0;//store the position for blank
 
+		//Get the values of the board
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 
 				arr[pos] = board[i][j];
 				pos++;
 								
+				//Marks the row of the blank, counting from bottom to top
 				if (board[i][j]==0) {
 					 row = size - i;
 				}
@@ -61,18 +80,18 @@ public class Board {
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = i + 1; j < arr.length; j++) {
 				if ((arr[i] > arr[j]) && arr[i] * arr[j] != 0) {
-					// System.out.println("i: "+arr[i]+"> j: "+arr[j]); //print
-					// out inversions
 					inversions++;
 
 				}
 			}
 		}
-		//System.out.println("Inversions: " + inversions);
+
+		//If the board size is odd, we don't care about the blank's position.
 		if (size % 2 == 1) {
 			if ((inversions) % 2 == 0) {
 				return true;
 			}
+			//If the board size is even, then add one if row is odd, or 0 if row is even.
 		} else {
 			if (row % 2 == 0) {
 				if (inversions % 2 == 1) {
@@ -91,10 +110,10 @@ public class Board {
 
 	/**
 	 * Moves the blank in direction d
-	 * @param row
-	 * @param col
-	 * @param d
-	 * @return
+	 * @param row The row that the blank space is in.
+	 * @param col The column that the blank space is in.
+	 * @param d The direction to move the blank.
+	 * @return True if the blank is moved, false otherwise.
 	 */
 	public boolean moveSpace(int row, int col, Direction d) {
 		if (this.board[row][col] != 0)
@@ -115,10 +134,19 @@ public class Board {
 		return true;
 	}
 	
+	/**
+	 * Creates a new board with a width and height of the given size.
+	 * @param size The width and height of the board.
+	 */
 	public Board(byte size) {
 		this.size = size;
 		board = new byte[size][size];
 	}
+	
+	/**
+	 * Creates a new board that is identical to the given board.
+	 * @param b The board to copy.
+	 */
 	public Board(Board b) {
 		this.size = b.size;
 		this.board = new byte[b.size][b.size];
@@ -129,6 +157,14 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Takes in a file and populates the board with the values from the file.
+	 * Each line in the file must be a series of numbers or blanks, separated by commas.
+	 * Each line can only have as many numbers as the board length.
+	 * The number of lines in the file that will be read is the size of the board.
+	 * Anything written after the last line in the puzzle will be ignored.
+	 * @param filename A path to a file to read in.
+	 */
 	public void parseFile(String filename) {
 		try {
 			FileReader fr = new FileReader(filename);
